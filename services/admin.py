@@ -14,9 +14,9 @@ class SafetyInline(admin.StackedInline):
 
 @admin.register(Toilet)
 class ToiletAdmin(admin.ModelAdmin):
-    list_display = ("name", "address", "opening_hours", "is_open_24h", "provider")
+    list_display = ("name", "facility_type", "address", "opening_hours", "is_open_24h", "is_officially_designated", "provider")
     search_fields = ("name", "address")
-    list_filter = ("is_open_24h", "accessible", "provider")
+    list_filter = ("facility_type", "is_open_24h", "accessible", "is_officially_designated", "provider")
     inlines = (ParkingInline, SafetyInline)
 
 

@@ -8,4 +8,5 @@ urlpatterns = [
     path("api/v1/toilets/<int:pk>/", views.toilet_detail_api, name="detail"),
     path("api/v1/toilets/<int:pk>/reports/", views.create_report, name="report"),
     path("health/", views.health, name="health"),
+    path("service-worker.js", views.service_worker, name="service-worker"),
 ]

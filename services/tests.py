@@ -17,6 +17,7 @@ class RecommendationTests(TestCase):
     def test_recommendation_api(self):
         response=self.client.get('/api/v1/toilets/recommendations/',{'latitude':35.1595,'longitude':126.8526})
         self.assertEqual(response.status_code,200);self.assertEqual(response.json()['count'],1)
+        self.assertEqual(response.json()['results'][0]['facility_type'],'PUBLIC')
     def test_report_api(self):
         response=self.client.post(f'/api/v1/toilets/{self.toilet.pk}/reports/',data=json.dumps({'report_type':'OPEN'}),content_type='application/json')
         self.assertEqual(response.status_code,201);self.assertEqual(UserReport.objects.count(),1)
@@ -38,3 +39,7 @@ class RecommendationTests(TestCase):
         UserReport.objects.create(toilet=self.toilet,report_type='PARKING_AVAILABLE')
         result=score_toilet(self.toilet,35.1595,126.8526)
         self.assertEqual(result.report_summary['positive'],2)
+    def test_service_worker_is_served_from_root_scope(self):
+        response=self.client.get('/service-worker.js')
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(response['Service-Worker-Allowed'],'/')

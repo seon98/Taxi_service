@@ -1,7 +1,7 @@
 import json
 import math
 from django.core.cache import cache
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -53,6 +53,8 @@ def toilet_detail_api(request, pk):
         return JsonResponse({"error": str(exc)}, status=400)
     data = score_toilet(toilet, lat, lng).to_dict()
     data.update({"opening_hours": toilet.opening_hours, "accessible": toilet.accessible,
+                 "facility_type": toilet.facility_type, "facility_type_label": toilet.get_facility_type_display(),
+                 "access_info": toilet.access_info, "is_officially_designated": toilet.is_officially_designated,
                  "data_updated_at": toilet.updated_at.isoformat(),
                  "reports": [{"type": r.get_report_type_display(), "comment": r.comment, "created_at": r.created_at.isoformat()} for r in toilet.reports.all() if r.expires_at is None or r.expires_at > timezone.now()][:5]})
     return JsonResponse(data)
@@ -90,3 +92,12 @@ def create_report(request, pk):
 
 def health(request):
     return JsonResponse({"status": "ok", "service": "Taxi Safe Toilet"})
+
+
+def service_worker(request):
+    script = '''self.addEventListener("install",event=>self.skipWaiting());
+self.addEventListener("activate",event=>event.waitUntil(self.clients.claim()));
+self.addEventListener("notificationclick",event=>{event.notification.close();event.waitUntil(self.clients.matchAll({type:"window",includeUncontrolled:true}).then(clients=>clients[0]?clients[0].focus():self.clients.openWindow("/")))});'''
+    response = HttpResponse(script, content_type="application/javascript")
+    response["Service-Worker-Allowed"] = "/"
+    return response

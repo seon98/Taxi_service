@@ -3,13 +3,21 @@ from django.db import models
 
 
 class Toilet(models.Model):
+    class FacilityType(models.TextChoices):
+        PUBLIC = "PUBLIC", "공중화장실"
+        OPEN = "OPEN", "개방화장실"
+        REST_AREA = "REST_AREA", "택시쉼터 화장실"
+
     name = models.CharField("화장실명", max_length=120)
+    facility_type = models.CharField("시설 유형", max_length=20, choices=FacilityType.choices, default=FacilityType.PUBLIC)
     address = models.CharField("주소", max_length=255)
     latitude = models.FloatField("위도")
     longitude = models.FloatField("경도")
     opening_hours = models.CharField("운영시간", max_length=120, default="상시 개방")
     is_open_24h = models.BooleanField("24시간", default=False)
     accessible = models.BooleanField("장애인 시설", default=False)
+    access_info = models.CharField("출입 안내", max_length=160, blank=True)
+    is_officially_designated = models.BooleanField("공식 지정", default=True)
     provider = models.CharField("데이터 제공처", max_length=80, default="샘플 데이터")
     external_id = models.CharField(max_length=100, blank=True)
     updated_at = models.DateTimeField(auto_now=True)

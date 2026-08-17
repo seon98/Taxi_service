@@ -1,38 +1,22 @@
 {% load static %}
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#10251f"><title>Taxi Safe Toilet</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="{% static 'css/app.css' %}">
-</head>
-<body>
-  <header><a class="brand" href="/"><span class="brand-mark">T</span><span>Taxi Safe Toilet<small>기사님을 위한 안심 정차 안내</small></span></a><button class="icon-btn" id="refresh" aria-label="다시 검색">↻</button></header>
-  <main>
-    <section class="hero">
-      <div><span class="eyebrow">운행 중 잠깐의 쉼</span><h1>가깝고, 열려 있고,<br><em>정차하기 안전한 곳</em></h1><p>화장실과 주차 정보, 단속 위험, 기사님 제보를 한 번에 확인하세요.</p></div>
-      <button class="urgent" id="locate"><span class="pulse">●</span><strong>지금 가까운 곳 찾기</strong><small>현재 위치를 기준으로 추천해요</small></button>
-    </section>
-    <section class="workspace">
-      <div id="map"></div>
-      <div class="location-pill" id="locationText">광주광역시청 주변 · 3km</div>
-      <aside class="results">
-        <div class="results-head"><div><span class="eyebrow">추천 장소</span><h2>안심 점수가 높은 순서예요</h2></div><span id="count">검색 중</span></div>
-        <div class="search-tools">
-          <div class="filter-row"><button class="active" data-filter="all">전체</button><button data-filter="open">지금 열림</button><button data-filter="parking">주차장 있음</button><button data-filter="accessible">장애인 시설</button><button data-filter="favorite">저장한 곳</button></div>
-          <div class="select-row"><label>반경 <select id="radius"><option value="1000">1km</option><option value="3000" selected>3km</option><option value="5000">5km</option><option value="10000">10km</option></select></label><label>정렬 <select id="sort"><option value="safe">안심 점수순</option><option value="distance">가까운 순</option></select></label></div>
-        </div>
-        <div class="notice" id="notice" hidden></div>
-        <div id="cards" class="cards"><div class="loading">주변 안전 정보를 분석하고 있어요…</div></div>
-      </aside>
-    </section>
-  </main>
-  <div class="sheet-backdrop" id="backdrop"></div>
-  <section class="detail-sheet" id="detail" aria-live="polite"></section>
-  <div class="toast" id="toast"></div>
-  <script>window.TST_DEFAULT = {lat: {{ default_lat }}, lng: {{ default_lng }}};</script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="{% static 'js/app.js' %}"></script>
+<!doctype html><html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#12141A"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><title>Taxi Safe Toilet</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head><body>
+  <header class="app-bar"><a class="brand" href="/"><span class="brand-mark">TAXI</span><span>Safe Toilet</span></a><div class="clock">현재 <b class="num" id="clockText">--:--</b></div><div class="app-actions"><button class="icon-btn" id="alertSettings" aria-label="근접 알림 설정">♢</button><button class="icon-btn" id="refresh" aria-label="다시 검색">↻</button></div><div class="checker"></div><div class="sync"><span class="sync-dot"></span> 공공·개방화장실 데이터 · 광주 MVP</div></header>
+  <main class="app-main"><section class="workspace" id="workspace">
+    <div id="map"></div><div class="location-pill" id="locationText">광주광역시청 주변 · 3km</div>
+    <button class="urgent" id="locate"><span class="locate-icon">⌖</span><span><strong>내 주변 찾기</strong><small>현재 위치로 검색</small></span></button>
+    <aside class="results"><div class="sheet-handle" aria-hidden="true"></div>
+      <div class="results-head"><div><span class="eyebrow">SAFE TOILET SCORE</span><h2>지금 가기 좋은 곳</h2></div><span class="num" id="count">검색 중</span></div>
+      <div class="filter-row"><button class="active" data-filter="all">전체</button><button data-filter="open">지금 열림</button><button data-filter="open_facility">개방화장실</button><button data-filter="parking">주차장 있음</button><button data-filter="accessible">장애인 시설</button><button data-filter="favorite">저장한 곳</button></div>
+      <div class="select-row"><label>반경 <select id="radius"><option value="1000">1km</option><option value="3000" selected>3km</option><option value="5000">5km</option><option value="10000">10km</option></select></label><label>정렬 <select id="sort"><option value="safe">안심 점수순</option><option value="distance">가까운 순</option></select></label></div>
+      <div class="notice" id="notice" hidden></div><div id="cards" class="cards"><div class="loading">주변 안전 정보를 분석하고 있어요…</div></div>
+    </aside>
+  </section></main>
+  <nav class="bottom-nav" aria-label="주요 메뉴"><button class="active" data-tab="map"><span>⌖</span>지도</button><button data-tab="list"><span>☷</span>추천</button><button data-tab="saved"><span>☆</span>저장</button></nav>
+  <section class="alert-panel" id="alertPanel" aria-hidden="true"><div class="panel-head"><div><span class="eyebrow">위치 기반 기능</span><h3>근처 화장실 알림</h3></div><button id="closeAlert" aria-label="닫기">×</button></div><p>이 앱이 실행 중일 때 내 위치를 계속 확인하고 가까운 화장실을 알려드려요. 위치는 저장하지 않습니다.</p><label>알림 거리 <select id="alertDistance"><option value="200">200m</option><option value="500" selected>500m</option><option value="1000">1km</option></select></label><button class="alert-toggle" id="alertToggle">근접 알림 켜기</button><small>모바일 웹은 앱이 완전히 종료되면 위치 추적이 중단됩니다.</small></section>
+  <div class="sheet-backdrop" id="backdrop"></div><section class="detail-sheet" id="detail" aria-live="polite"></section><div class="toast" id="toast"></div>
+  <script>window.TST_DEFAULT={lat:{{ default_lat }},lng:{{ default_lng }}};</script><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="{% static 'js/app.js' %}"></script>
 </body></html>

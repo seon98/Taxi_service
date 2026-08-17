@@ -33,6 +33,8 @@ class Recommendation:
     latitude: float
     longitude: float
     accessible: bool
+    facility_type: str
+    facility_type_label: str
     distance_meters: int
     is_open: bool
     safe_score: int
@@ -82,7 +84,7 @@ def score_toilet(toilet, latitude, longitude):
     if opened: reasons.append("현재 이용 가능해요")
     if negative: reasons.append("최근 주의 제보가 있어요")
     reason = reasons[0] if reasons else "거리와 안전 정보를 종합했어요"
-    return Recommendation(toilet.id, toilet.name, toilet.address, toilet.latitude, toilet.longitude, toilet.accessible, distance, opened, score, risk,
+    return Recommendation(toilet.id, toilet.name, toilet.address, toilet.latitude, toilet.longitude, toilet.accessible, toilet.facility_type, toilet.get_facility_type_display(), distance, opened, score, risk,
         {"available": parking is not None, "name": parking.name if parking else None, "distance_meters": parking_distance, "capacity": parking.capacity if parking else None},
         {"distance": round(distance_score), "availability": availability_score, "parking": round(parking_score), "enforcement": round(max(0, enforcement_score)), "reports": report_score,
          "cctv_distance_m": cctv_distance, "protected_zone": safety.is_protected_zone if safety else False},
