@@ -4,6 +4,11 @@
   <meta name="theme-color" content="#12141A"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><title>Taxi Safe Toilet</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><link rel="stylesheet" href="{% static 'css/app.css' %}">
 </head><body>
+  <section class="welcome" id="welcome" aria-label="내 주변 화장실 찾기 시작">
+    <div class="welcome-top"><span class="welcome-lamp">TAXI</span><b>Safe Toilet</b></div><div class="welcome-checker"></div>
+    <div class="welcome-content"><p class="welcome-area">택시 기사 전용 안심 안내</p><h1>지금 세울 수 있고<br><em>바로 쓸 수 있는</em> 화장실</h1><p>가장 가까운 곳뿐 아니라 개방 여부, 주차장과 단속 위험까지 함께 확인해요.</p><button class="panic" id="startNearby"><span class="panic-icon">⌖</span><span class="panic-big">내 주변<br>화장실 찾기</span><span class="panic-small">현재 위치 기준 안전한 장소 추천</span></button><div class="welcome-notes"><span>위치는 저장하지 않아요</span><span>공중·개방화장실 통합</span></div></div>
+    <div class="search-progress" id="searchProgress" aria-live="polite"><h2>안전한 장소를 찾고 있어요</h2><p id="progressMessage">현재 위치를 확인합니다</p><div class="progress-steps"><div class="progress-step" data-step="0"><span>1</span><b>현재 위치 확인</b><small>브라우저 위치 권한</small></div><div class="progress-step" data-step="1"><span>2</span><b>주변 화장실 검색</b><small>공중·개방화장실 통합</small></div><div class="progress-step" data-step="2"><span>3</span><b>주차·단속 정보 분석</b><small>CCTV와 보호구역 확인</small></div><div class="progress-step" data-step="3"><span>4</span><b>안심 점수 계산</b><small>추천 순위를 정리합니다</small></div></div></div>
+  </section>
   <header class="app-bar"><a class="brand" href="/"><span class="brand-mark">TAXI</span><span>Safe Toilet</span></a><div class="clock">현재 <b class="num" id="clockText">--:--</b></div><div class="app-actions"><button class="icon-btn" id="alertSettings" aria-label="근접 알림 설정">♢</button><button class="icon-btn" id="refresh" aria-label="다시 검색">↻</button></div><div class="checker"></div><div class="sync"><span class="sync-dot"></span> 공공·개방화장실 데이터 · 광주 MVP</div></header>
   <main class="app-main"><section class="workspace" id="workspace">
     <div id="map"></div><div class="location-pill" id="locationText">광주광역시청 주변 · 3km</div>
