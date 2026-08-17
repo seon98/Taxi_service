@@ -21,7 +21,11 @@
       <div class="location-pill" id="locationText">광주광역시청 주변 · 3km</div>
       <aside class="results">
         <div class="results-head"><div><span class="eyebrow">추천 장소</span><h2>안심 점수가 높은 순서예요</h2></div><span id="count">검색 중</span></div>
-        <div class="filter-row"><button class="active" data-filter="all">전체</button><button data-filter="open">지금 열림</button><button data-filter="parking">주차장 있음</button></div>
+        <div class="search-tools">
+          <div class="filter-row"><button class="active" data-filter="all">전체</button><button data-filter="open">지금 열림</button><button data-filter="parking">주차장 있음</button><button data-filter="accessible">장애인 시설</button><button data-filter="favorite">저장한 곳</button></div>
+          <div class="select-row"><label>반경 <select id="radius"><option value="1000">1km</option><option value="3000" selected>3km</option><option value="5000">5km</option><option value="10000">10km</option></select></label><label>정렬 <select id="sort"><option value="safe">안심 점수순</option><option value="distance">가까운 순</option></select></label></div>
+        </div>
+        <div class="notice" id="notice" hidden></div>
         <div id="cards" class="cards"><div class="loading">주변 안전 정보를 분석하고 있어요…</div></div>
       </aside>
     </section>
